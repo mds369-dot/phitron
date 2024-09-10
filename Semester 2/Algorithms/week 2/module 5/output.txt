@@ -1,1 +1,1 @@
-Cycle not found
+Cycle not detected
