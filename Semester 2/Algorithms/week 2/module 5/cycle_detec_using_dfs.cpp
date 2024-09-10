@@ -45,8 +45,8 @@ int main()
         }
     }
     if (ans)
-        cout << "Cycle detected";
+        cout << "Cycle detected!!";
     else
-        cout << "Cycle not detected";
+        cout << "Cycle not detected!!";
     return 0;
 }
