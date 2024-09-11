@@ -41,7 +41,7 @@ int main()
     dijkstra(0);
     for (int i = 0; i < n; i++)
     {
-        cout << i << "->" << dis[i] << endl;
+        cout << i << " -> " << dis[i] << endl;
     }
 
     return 0;
