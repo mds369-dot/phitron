@@ -18,6 +18,11 @@ void dijkstra(int src)
         {
             int childNode = child.first;
             int childCost = child.second;
+            if (cost + childCost < dis[childNode])
+            {
+                dis[childNode] = cost + childCost;
+                q.push({childNode, dis[childNode]});
+            }
         }
     }
 }
@@ -34,6 +39,10 @@ int main()
     }
     memset(dis, INT_MAX, sizeof(dis));
     dijkstra(0);
+    for (int i = 0; i < n; i++)
+    {
+        cout << i << "->" << dis[i] << endl;
+    }
 
     return 0;
 }
