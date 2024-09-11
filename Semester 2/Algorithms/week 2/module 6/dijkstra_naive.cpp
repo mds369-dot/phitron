@@ -20,6 +20,7 @@ void dijkstra(int src)
             int childCost = child.second;
             if (cost + childCost < dis[childNode])
             {
+                // path relax
                 dis[childNode] = cost + childCost;
                 q.push({childNode, dis[childNode]});
             }
@@ -37,12 +38,14 @@ int main()
         v[a].push_back({b, c});
         v[b].push_back({a, c});
     }
-    memset(dis, INT_MAX, sizeof(dis));
+    for (int i = 0; i < n; i++)
+    {
+        dis[i] = INT_MAX;
+    }
     dijkstra(0);
     for (int i = 0; i < n; i++)
     {
-        cout << i << " -> " << dis[i] << endl;
+        cout << i << "-> " << dis[i] << endl;
     }
-
     return 0;
 }
