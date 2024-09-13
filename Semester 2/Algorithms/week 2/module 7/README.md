@@ -81,3 +81,77 @@ int main() {
 এই কোডটি ৫টি নোডের একটি গ্রাফে বেলম্যান-ফোর্ড অ্যালগরিদম প্রয়োগ করে সোর্স নোড ০ থেকে অন্যান্য নোডের সর্বনিম্ন দূরত্ব বের করবে।
 
 ## Floyd Warshall Algorithm
+
+**Negative Cycle** শনাক্ত করার জন্য **Bellman-Ford Algorithm** অত্যন্ত কার্যকরী, কারণ এটি শুধুমাত্র সর্বনিম্ন পথ বের করে না, বরং কোনো **Negative Weight Cycle** (যে সাইকেল বারবার ঘুরে ছোটো ও ছোটো ওয়েট পেতে পারে) থাকলে সেটিও সনাক্ত করে।
+
+### Negative Cycle শনাক্ত করার পদ্ধতি:
+
+1. **Relaxation Step**: Bellman-Ford অ্যালগরিদমে প্রতিটি এজের উপর ভিত্তি করে মোট **V - 1** বার রিল্যাক্সেশন (Relaxation) করা হয়। এখানে V হল নোডের সংখ্যা।
+2. **Negative Cycle Detection**: V - 1 বার রিল্যাক্সেশনের পরে যদি আবারও কোনো নোডের ওয়েট কমে যায়, তাহলে গ্রাফে **Negative Cycle** আছে বলে ধরে নেওয়া হয়।
+
+### কোড উদাহরণ (C++):
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+struct Edge {
+    int u, v, weight;
+};
+
+bool detectNegativeCycle(int V, int E, vector<Edge>& edges) {
+    vector<int> dist(V, INT_MAX);
+    dist[0] = 0; // Assuming source is 0
+
+    // Step 1: Relax all edges V-1 times
+    for (int i = 0; i < V - 1; ++i) {
+        for (int j = 0; j < E; ++j) {
+            int u = edges[j].u;
+            int v = edges[j].v;
+            int weight = edges[j].weight;
+            if (dist[u] != INT_MAX && dist[u] + weight < dist[v]) {
+                dist[v] = dist[u] + weight;
+            }
+        }
+    }
+
+    // Step 2: Check for negative-weight cycles
+    for (int j = 0; j < E; ++j) {
+        int u = edges[j].u;
+        int v = edges[j].v;
+        int weight = edges[j].weight;
+        if (dist[u] != INT_MAX && dist[u] + weight < dist[v]) {
+            // If we can still relax an edge, it means there is a negative cycle
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int main() {
+    int V = 5;  // Number of vertices
+    int E = 8;  // Number of edges
+    vector<Edge> edges = {
+        {0, 1, -1}, {0, 2, 4}, {1, 2, 3}, {1, 3, 2},
+        {1, 4, 2}, {3, 2, 5}, {3, 1, 1}, {4, 3, -3}
+    };
+
+    if (detectNegativeCycle(V, E, edges)) {
+        cout << "Graph contains a negative-weight cycle" << endl;
+    } else {
+        cout << "No negative-weight cycle found" << endl;
+    }
+
+    return 0;
+}
+```
+
+### ব্যাখ্যা:
+
+1. **Relaxation**: প্রথমে আমরা প্রতিটি এজকে **V - 1** বার রিল্যাক্স করি (যা মিনিমাম ওয়েট আপডেট করার কাজ করে)।
+2. **Negative Cycle Detection**: সব এজের উপর দিয়ে আবার যাচাই করা হয় যদি কোনো নোডের ওয়েট এখনও কমে যায়, তাহলে এটি বোঝা যায় যে গ্রাফে একটি **Negative Weight Cycle** রয়েছে।
+3. **Output**: যদি নেগেটিভ সাইকেল থাকে, আমরা `"Graph contains a negative-weight cycle"` মেসেজ প্রিন্ট করি, অন্যথায় `"No negative-weight cycle found"` মেসেজ প্রিন্ট হয়।
+
+এটি কার্যকরীভাবে নেগেটিভ ওয়েট সাইকেল শনাক্ত করতে সক্ষম।
