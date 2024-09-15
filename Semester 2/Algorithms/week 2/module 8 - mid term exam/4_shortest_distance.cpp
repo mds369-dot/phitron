@@ -1,167 +1,108 @@
-// // #include <bits/stdc++.h>
-// // using namespace std;
-
-// // const int INF = 1e9;
-
-// // int main()
-// // {
-// //     int N, E;
-// //     cin >> N >> E;
-
-// //     vector<vector<int>> dist(N + 1, vector<int>(N + 1, INF));
-// //     for (int i = 1; i <= N; ++i)
-// //     {
-// //         dist[i][i] = 0;
-// //     }
-// //     for (int i = 0; i < E; ++i)
-// //     {
-// //         int A, B, W;
-// //         cin >> A >> B >> W;
-// //         dist[A][B] = min(dist[A][B], W);
-// //     }
-// //     for (int k = 1; k <= N; ++k)
-// //     {
-// //         for (int i = 1; i <= N; ++i)
-// //         {
-// //             for (int j = 1; j <= N; ++j)
-// //             {
-// //                 if (dist[i][k] < INF && dist[k][j] < INF)
-// //                 {
-// //                     dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
-// //                 }
-// //             }
-// //         }
-// //     }
-// //     int Q;
-// //     cin >> Q;
-// //     while (Q--)
-// //     {
-// //         int X, Y;
-// //         cin >> X >> Y;
-// //         if (dist[X][Y] == INF)
-// //         {
-// //             cout << -1 << endl;
-// //         }
-// //         else
-// //         {
-// //             cout << dist[X][Y] << endl;
-// //         }
-// //     }
-
-// //     return 0;
-// // }
-
-// #include <bits/stdc++.h>
-// using namespace std;
-
-// const int INF = INT_MAX;
-
-// int main()
-// {
-//     int N, E;
-//     cin >> N >> E;
-
-//     vector<vector<int>> dist(N + 1, vector<int>(N + 1, INF));
-//     for (int i = 1; i <= N; ++i)
-//     {
-//         dist[i][i] = 0;
-//     }
-//     for (int i = 0; i < E; ++i)
-//     {
-//         int A, B, W;
-//         cin >> A >> B >> W;
-//         dist[A][B] = min(dist[A][B], W);
-//     }
-
-//     for (int k = 1; k <= N; ++k)
-//     {
-//         for (int i = 1; i <= N; ++i)
-//         {
-//             for (int j = 1; j <= N; ++j)
-//             {
-//                 if (dist[i][k] < INF && dist[k][j] < INF)
-//                 {
-//                     dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
-//                 }
-//             }
-//         }
-//     }
-//     int Q;
-//     cin >> Q;
-//     while (Q--)
-//     {
-//         int X, Y;
-//         cin >> X >> Y;
-//         if (dist[X][Y] == INF)
-//         {
-//             cout << -1 << endl;
-//         }
-//         else
-//         {
-//             cout << dist[X][Y] << endl;
-//         }
-//     }
-
-//     return 0;
-// }
-
 #include <bits/stdc++.h>
-
+#include <vector>
+#include <queue>
+#include <climits>
+#include <algorithm>
 using namespace std;
 
-const int MAXN = 101;
-const int INF = 1e9;
+const int INF = INT_MAX;
 
-vector<pair<int, int>> adj[MAXN];
-
-int dijkstra(int source, int destination)
+struct Edge
 {
-    vector<int> dist(MAXN, INF);
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    int node, weight;
+    Edge(int _node, int _weight) : node(_node), weight(_weight) {}
+};
 
-    dist[source] = 0;
-    pq.push({0, source});
+vector<vector<Edge>> adj;
+vector<vector<int>> dist;
+
+void dijkstra(int src, int N)
+{
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    vector<int> minDist(N + 1, INF);
+
+    minDist[src] = 0;
+    pq.push({0, src});
 
     while (!pq.empty())
     {
+        int d = pq.top().first;
         int u = pq.top().second;
         pq.pop();
 
-        for (auto &v : adj[u])
+        if (d > minDist[u])
+            continue;
+
+        for (Edge e : adj[u])
         {
-            int weight = v.second;
-            if (dist[u] + weight >= dist[v.first])
+            int v = e.node;
+            int weight = e.weight;
+            if (minDist[u] + weight < minDist[v])
             {
-                continue; // Skip to next neighbor if current is not better
+                minDist[v] = minDist[u] + weight;
+                pq.push({minDist[v], v});
             }
-            dist[v.first] = dist[u] + weight;
-            pq.push({dist[v.first], v.first});
         }
     }
 
-    return dist[destination] == INF ? -1 : dist[destination];
+    dist[src] = minDist;
 }
 
 int main()
 {
-    int N, E, Q;
+    int N, E;
     cin >> N >> E;
 
+    adj.resize(N + 1);
+    dist.resize(N + 1, vector<int>(N + 1, INF));
+
+    // Reading graph input, handling multiple edges
     for (int i = 0; i < E; i++)
     {
         int A, B, W;
         cin >> A >> B >> W;
-        adj[A].push_back({B, W});
+
+        // Add edge, keep only the smallest weight for any A -> B
+        bool found = false;
+        for (Edge &e : adj[A])
+        {
+            if (e.node == B)
+            {
+                if (W < e.weight)
+                {
+                    e.weight = W; // Update with the smaller weight
+                }
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+        {
+            adj[A].push_back(Edge(B, W));
+        }
     }
 
-    cin >> Q;
+    // Run Dijkstra for each node
+    for (int i = 1; i <= N; i++)
+    {
+        dijkstra(i, N);
+    }
 
-    for (int i = 0; i < Q; i++)
+    int Q;
+    cin >> Q;
+    while (Q--)
     {
         int X, Y;
         cin >> X >> Y;
-        int minCost = dijkstra(X, Y);
-        cout << minCost << endl;
+        int result = dist[X][Y];
+        if (result == INF)
+        {
+            cout << "-1" << endl;
+        }
+        else
+        {
+            cout << result << endl;
+        }
     }
 
     return 0;
