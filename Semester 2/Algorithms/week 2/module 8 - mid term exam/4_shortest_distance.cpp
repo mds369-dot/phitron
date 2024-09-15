@@ -1,103 +1,92 @@
 #include <bits/stdc++.h>
-#include <vector>
-#include <queue>
-#include <climits>
-#include <algorithm>
 using namespace std;
 
 const int INF = INT_MAX;
 
-struct Edge
+vector<int> dijkstra(int source, int N, const vector<vector<pair<int, int>>> &adj)
 {
-    int node, weight;
-    Edge(int _node, int _weight) : node(_node), weight(_weight) {}
-};
-
-vector<vector<Edge>> adj;
-vector<vector<int>> dist;
-
-void dijkstra(int src, int N)
-{
+    vector<int> dist(N + 1, INF);
+    dist[source] = 0;
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
-    vector<int> minDist(N + 1, INF);
-
-    minDist[src] = 0;
-    pq.push({0, src});
+    pq.push({0, source});
 
     while (!pq.empty())
     {
-        int d = pq.top().first;
+        int currDist = pq.top().first;
         int u = pq.top().second;
         pq.pop();
-
-        if (d > minDist[u])
+        if (currDist > dist[u])
             continue;
-
-        for (Edge e : adj[u])
+        for (auto &neighbor : adj[u])
         {
-            int v = e.node;
-            int weight = e.weight;
-            if (minDist[u] + weight < minDist[v])
+            int v = neighbor.first;
+            int weight = neighbor.second;
+            if (dist[u] + weight < dist[v])
             {
-                minDist[v] = minDist[u] + weight;
-                pq.push({minDist[v], v});
+                dist[v] = dist[u] + weight;
+                pq.push({dist[v], v});
             }
         }
     }
 
-    dist[src] = minDist;
+    return dist;
 }
 
 int main()
 {
     int N, E;
     cin >> N >> E;
+    vector<vector<pair<int, int>>> adj(N + 1);
+    unordered_map<int, unordered_map<int, int>> edge_map;
 
-    adj.resize(N + 1);
-    dist.resize(N + 1, vector<int>(N + 1, INF));
-
-    // Reading graph input, handling multiple edges
-    for (int i = 0; i < E; i++)
+    // Reading the edges
+    for (int i = 0; i < E; ++i)
     {
         int A, B, W;
         cin >> A >> B >> W;
-
-        // Add edge, keep only the smallest weight for any A -> B
-        bool found = false;
-        for (Edge &e : adj[A])
+        if (edge_map[A].count(B))
         {
-            if (e.node == B)
-            {
-                if (W < e.weight)
-                {
-                    e.weight = W; // Update with the smaller weight
-                }
-                found = true;
-                break;
-            }
+            edge_map[A][B] = min(edge_map[A][B], W);
         }
-        if (!found)
+        else
         {
-            adj[A].push_back(Edge(B, W));
+            edge_map[A][B] = W;
         }
     }
-
-    // Run Dijkstra for each node
-    for (int i = 1; i <= N; i++)
+    for (auto &u : edge_map)
     {
-        dijkstra(i, N);
+        int from = u.first;
+        for (auto &v : u.second)
+        {
+            int to = v.first;
+            int weight = v.second;
+            adj[from].push_back({to, weight});
+        }
     }
 
     int Q;
     cin >> Q;
-    while (Q--)
+
+    vector<pair<int, int>> queries(Q);
+    vector<vector<int>> distances(N + 1);
+    for (int i = 0; i < Q; ++i)
     {
         int X, Y;
         cin >> X >> Y;
-        int result = dist[X][Y];
+        queries[i] = {X, Y};
+        if (distances[X].empty())
+        {
+            distances[X] = dijkstra(X, N, adj);
+        }
+    }
+    for (int i = 0; i < Q; ++i)
+    {
+        int X = queries[i].first;
+        int Y = queries[i].second;
+        int result = distances[X][Y];
         if (result == INF)
         {
-            cout << "-1" << endl;
+            cout << -1 << endl;
         }
         else
         {
