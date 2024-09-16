@@ -51,3 +51,35 @@ int dsu_find(int node)
     return leader;
 }
 ```
+
+### DSU Union
+
+```
+void dsu_union(int node1, int node2)
+{
+
+    int leaderA = dsu_find(node1);
+    int leaderB = dsu_find(node2);
+    par[leaderA] = leaderB;
+}
+```
+
+### DSU Union by Size
+
+```
+void dsu_union_by_size(int node1, int node2)
+{
+    int leaderA = dsu_find(node1);
+    int leaderB = dsu_find(node2);
+    if (group_size[leaderA] > group_size[leaderB])
+    {
+        par[leaderB] = leaderA;
+        group_size[leaderA] += group_size[leaderB];
+    }
+    else
+    {
+        par[leaderA] = leaderB;
+        group_size[leaderB] += group_size[leaderA];
+    }
+}
+```
