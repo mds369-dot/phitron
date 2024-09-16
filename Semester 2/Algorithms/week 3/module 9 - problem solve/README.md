@@ -66,7 +66,7 @@ public:
 
 ## 1971. Find if Path Exists in Graph
 
-[Problem Set 1](https://leetcode.com/problems/find-if-path-exists-in-graph/description/)
+[Problem Set 2](https://leetcode.com/problems/find-if-path-exists-in-graph/description/)
 
 ### Find if Path Exist in Graph
 
