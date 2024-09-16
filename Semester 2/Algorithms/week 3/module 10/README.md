@@ -38,3 +38,16 @@ DSU একটি খুব গুরুত্বপূর্ণ এবং কা
 find()
 union()
 ```
+
+### DSU find code
+
+```
+int dsu_find(int node)
+{
+    if (par[node] == -1)
+        return node;
+    int leader = find(par[node]);
+    par[node] = leader;
+    return leader;
+}
+```
