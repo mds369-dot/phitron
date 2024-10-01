@@ -44,11 +44,11 @@ int main()
 
     if (dis[des] != -1 && dis[des] <= k * 2)
     {
-        cout << "Yes" << endl;
+        cout << "YES" << endl;
     }
     else
     {
-        cout << "No" << endl;
+        cout << "NO" << endl;
     }
 
     return 0;
