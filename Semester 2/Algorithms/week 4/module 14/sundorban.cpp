@@ -4,7 +4,7 @@ char a[50][50];
 bool vis[50][50];
 int dis[50][50];
 int n;
-vector<pair<int, int>> d = {{0, 1}, {0, -1}, {-1, 0}, {1, 0}};
+vector<pair<int, int> > d;
 bool valid(int ci, int cj)
 {
     if (ci >= 0 && ci < n && cj >= 0 && cj < n)
@@ -18,7 +18,7 @@ bool valid(int ci, int cj)
 }
 void bfs(int si, int sj)
 {
-    queue<pair<int, int>> q;
+    queue<pair<int, int> > q;
     q.push({si, sj});
     dis[si][sj] = 0;
     vis[si][sj] = true;
@@ -41,6 +41,10 @@ void bfs(int si, int sj)
 }
 int main()
 {
+    d.push_back({0, 1});
+    d.push_back({0, -1});
+    d.push_back({-1, 0});
+    d.push_back({1, 0});
     while (cin >> n)
     {
         int si, sj;
