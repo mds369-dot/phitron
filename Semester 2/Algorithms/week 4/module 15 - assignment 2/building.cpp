@@ -78,69 +78,135 @@
 
 //     return 0;
 // }
+// #include <bits/stdc++.h>
+// using namespace std;
+// struct Edge
+// {
+//     int u, v, w;
+// };
+// int find(int u, vector<int> &parent)
+// {
+//     if (parent[u] == u)
+//         return u;
+//     return parent[u] = find(parent[u], parent);
+// }
+// bool unite(int u, int v, vector<int> &parent, vector<int> &rank)
+// {
+//     u = find(u, parent);
+//     v = find(v, parent);
+//     if (u == v)
+//         return false;
+
+//     if (rank[u] < rank[v])
+//         swap(u, v);
+//     parent[v] = u;
+//     if (rank[u] == rank[v])
+//         rank[u]++;
+//     return true;
+// }
+// int kruskal(int n, vector<Edge> &edges)
+// {
+//     sort(edges.begin(), edges.end(), [](Edge &a, Edge &b)
+//          { return a.w < b.w; });
+//     vector<int> parent(n + 1), rank(n + 1, 0);
+//     for (int i = 1; i <= n; i++)
+//         parent[i] = i;
+
+//     int mst_cost = 0;
+//     int edges_used = 0;
+//     for (auto &edge : edges)
+//     {
+//         if (unite(edge.u, edge.v, parent, rank))
+//         {
+//             mst_cost += edge.w;
+//             edges_used++;
+//             if (edges_used == n - 1)
+//                 break;
+//         }
+//     }
+//     if (edges_used != n - 1)
+//         return -1;
+//     return mst_cost;
+// }
+
+// int main()
+// {
+//     int n, e;
+//     cin >> n >> e;
+
+//     vector<Edge> edges(e);
+
+//     for (int i = 0; i < e; i++)
+//     {
+//         cin >> edges[i].u >> edges[i].v >> edges[i].w;
+//     }
+//     int result = kruskal(n, edges);
+//     cout << result << endl;
+
+//     return 0;
+// }
+
 #include <bits/stdc++.h>
 using namespace std;
-struct Edge
-{
-    int u, v, w;
-};
-int find(int u, vector<int> &parent)
-{
-    if (parent[u] == u)
-        return u;
-    return parent[u] = find(parent[u], parent);
-}
-bool unite(int u, int v, vector<int> &parent, vector<int> &rank)
-{
-    u = find(u, parent);
-    v = find(v, parent);
-    if (u == v)
-        return false;
 
-    if (rank[u] < rank[v])
-        swap(u, v);
-    parent[v] = u;
-    if (rank[u] == rank[v])
-        rank[u]++;
-    return true;
-}
-int kruskal(int n, vector<Edge> &edges)
-{
-    sort(edges.begin(), edges.end(), [](Edge &a, Edge &b)
-         { return a.w < b.w; });
-    vector<int> parent(n + 1), rank(n + 1, 0);
-    for (int i = 1; i <= n; i++)
-        parent[i] = i;
+const int MAXN = 100005;
+vector<pair<int, int>> adj[MAXN];
+bool visited[MAXN];
 
-    int mst_cost = 0;
+int primMST(int N)
+{
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+    pq.push({0, 1});
+    int total_cost = 0;
     int edges_used = 0;
-    for (auto &edge : edges)
+
+    while (!pq.empty())
     {
-        if (unite(edge.u, edge.v, parent, rank))
+        int cost = pq.top().first;
+        int node = pq.top().second;
+        pq.pop();
+
+        if (visited[node])
+            continue;
+        visited[node] = true;
+        total_cost += cost;
+        edges_used++;
+
+        for (auto next : adj[node])
         {
-            mst_cost += edge.w;
-            edges_used++;
-            if (edges_used == n - 1)
-                break;
+            int next_node = next.first;
+            int next_cost = next.second;
+            if (!visited[next_node])
+            {
+                pq.push({next_cost, next_node});
+            }
         }
     }
-    if (edges_used != n - 1)
+
+    if (edges_used == N)
+    {
+        return total_cost;
+    }
+    else
+    {
         return -1;
-    return mst_cost;
+    }
 }
 
 int main()
 {
-    int n, e;
-    cin >> n >> e;
+    int N, E;
+    cin >> N >> E;
 
-    vector<Edge> edges(e);
-
-    for (int i = 0; i < e; i++)
+    for (int i = 0; i < E; i++)
     {
-        cin >> edges[i].u >> edges[i].v >> edges[i].w;
+        int u, v, w;
+        cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
     }
-    int result = kruskal(n, edges);
+
+    int result = primMST(N);
     cout << result << endl;
 
     return 0;
