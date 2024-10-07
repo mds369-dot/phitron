@@ -1,80 +1,147 @@
+// #include <bits/stdc++.h>
+// using namespace std;
+// const int N = 1e5 + 5;
+// int par[N];
+// int grp_size[N];
+// void dsu_inz(int n)
+// {
+//     for (int i = 1; i <= n; i++)
+//     {
+//         par[i] = -1;
+//         grp_size[i] = 1;
+//     }
+// }
+// int dsu_find(int node)
+// {
+//     if (par[node] == -1)
+//     {
+//         return node;
+//     }
+//     return par[node] = dsu_find(par[node]);
+// }
+// bool dsu_U_by_size(int a, int b)
+// {
+//     int leaderA = dsu_find(a);
+//     int leaderB = dsu_find(b);
+//     if (leaderA == leaderB)
+//     {
+//         return false;
+//     }
+//     if (grp_size[leaderA] > grp_size[leaderB])
+//     {
+//         par[leaderB] = leaderA;
+//         grp_size[leaderA] += grp_size[leaderB];
+//     }
+//     else
+//     {
+//         par[leaderA] = leaderB;
+//         grp_size[leaderB] += grp_size[leaderA];
+//     }
+//     return true;
+// }
+// int main()
+// {
+//     int n, e;
+//     cin >> n >> e;
+//     vector<pair<int, pair<int, int>>> edges;
+//     for (int i = 0; i < e; i++)
+//     {
+//         int a, b, c;
+//         cin >> a >> b >> c;
+//         edges.push_back({c, {a, b}});
+//     }
+//     sort(edges.begin(), edges.end());
+//     dsu_inz(n);
+
+//     int totalCosts = 0;
+//     int edgesUsed = 0;
+//     for (auto &edge : edges)
+//     {
+//         int c = edge.first;
+//         int a = edge.second.first;
+//         int b = edge.second.second;
+
+//         if (dsu_U_by_size(a, b))
+//         {
+//             totalCosts += c;
+//             edgesUsed++;
+//         }
+//     }
+//     if (edgesUsed == n - 1)
+//     {
+//         cout << totalCosts << endl;
+//     }
+//     else
+//     {
+//         cout << -1 << endl;
+//     }
+
+//     return 0;
+// }
 #include <bits/stdc++.h>
 using namespace std;
-const int N = 1e5 + 5;
-int par[N];
-int grp_size[N];
-void dsu_inz(int n)
+struct Edge
 {
-    for (int i = 1; i <= n; i++)
-    {
-        par[i] = -1;
-        grp_size[i] = 1;
-    }
+    int u, v, w;
+};
+int find(int u, vector<int> &parent)
+{
+    if (parent[u] == u)
+        return u;
+    return parent[u] = find(parent[u], parent);
 }
-int dsu_find(int node)
+bool unite(int u, int v, vector<int> &parent, vector<int> &rank)
 {
-    if (par[node] == -1)
-    {
-        return node;
-    }
-    return par[node] = dsu_find(par[node]);
-}
-bool dsu_U_by_size(int a, int b)
-{
-    int leaderA = dsu_find(a);
-    int leaderB = dsu_find(b);
-    if (leaderA == leaderB)
-    {
+    u = find(u, parent);
+    v = find(v, parent);
+    if (u == v)
         return false;
-    }
-    if (grp_size[leaderA] > grp_size[leaderB])
-    {
-        par[leaderB] = leaderA;
-        grp_size[leaderA] += grp_size[leaderB];
-    }
-    else
-    {
-        par[leaderA] = leaderB;
-        grp_size[leaderB] += grp_size[leaderA];
-    }
+
+    if (rank[u] < rank[v])
+        swap(u, v);
+    parent[v] = u;
+    if (rank[u] == rank[v])
+        rank[u]++;
     return true;
 }
+int kruskal(int n, vector<Edge> &edges)
+{
+    sort(edges.begin(), edges.end(), [](Edge &a, Edge &b)
+         { return a.w < b.w; });
+    vector<int> parent(n + 1), rank(n + 1, 0);
+    for (int i = 1; i <= n; i++)
+        parent[i] = i;
+
+    int mst_cost = 0;
+    int edges_used = 0;
+    for (auto &edge : edges)
+    {
+        if (unite(edge.u, edge.v, parent, rank))
+        {
+            mst_cost += edge.w;
+            edges_used++;
+            if (edges_used == n - 1)
+                break;
+        }
+    }
+    if (edges_used != n - 1)
+        return -1;
+    return mst_cost;
+}
+
 int main()
 {
     int n, e;
     cin >> n >> e;
-    vector<pair<int, pair<int, int>>> edges;
+
+    vector<Edge> edges(e);
+
     for (int i = 0; i < e; i++)
     {
-        int a, b, c;
-        cin >> a >> b >> c;
-        edges.push_back({c, {a, b}});
+        cin >> edges[i].u >> edges[i].v >> edges[i].w;
     }
-    sort(edges.begin(), edges.end());
-    dsu_inz(n);
-
-    int totalCosts = 0;
-    int edgesUsed = 0;
-    for (auto &edge : edges)
-    {
-        int c = edge.first;
-        int a = edge.second.first;
-        int b = edge.second.second;
-
-        if (dsu_U_by_size(a, b))
-        {
-            totalCosts += c;
-            edgesUsed++;
-        }
-    }
-    if (edgesUsed == n - 1)
-    {
-        cout << totalCosts << endl;
-    }
-    else
-    {
-        cout << -1 << endl;
-    }
+    int result = kruskal(n, edges);
+    cout << result << endl;
 
     return 0;
 }
