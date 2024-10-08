@@ -146,3 +146,69 @@ int main() {
 - Both the recursive and iterative solutions have a time complexity of \(O(n)\) because they involve multiplying the numbers from 1 to `n`.
 
 Would you like further explanation on the DP-like tabulation for this, or are you interested in exploring a more complex factorial-based problem?
+
+# Fibonacci Series Recurvise Solution (FSRS)
+
+The **Fibonacci series** is a sequence of numbers where each number is the sum of the two preceding ones, usually starting with 0 and 1. Mathematically, it can be defined as:
+
+\[
+F(n) =
+\begin{cases}
+0 & \text{if } n = 0 \\
+1 & \text{if } n = 1 \\
+F(n-1) + F(n-2) & \text{if } n > 1
+\end{cases}
+\]
+
+### Recursive Solution for Fibonacci Series
+
+The recursive solution follows directly from the mathematical definition, where we call the function recursively to calculate `F(n-1)` and `F(n-2)` until we reach the base cases.
+
+Here is the C++ implementation:
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int fibonacci(int n) {
+    // Base cases
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+
+    // Recursive calls to find Fibonacci of n-1 and n-2
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+int main() {
+    int n;
+    cout << "Enter the value of n: ";
+    cin >> n;
+    cout << "Fibonacci of " << n << " is " << fibonacci(n) << endl;
+    return 0;
+}
+```
+
+### Explanation:
+
+- **Base Case**: If `n` is 0, the function returns 0, and if `n` is 1, it returns 1.
+- **Recursive Case**: For `n > 1`, the function recursively calls itself to compute `F(n-1)` and `F(n-2)`.
+
+### Time Complexity:
+
+The time complexity of this recursive solution is **O(2^n)**, which is quite inefficient. This is because the function recalculates the Fibonacci values for the same input multiple times.
+
+### Example:
+
+If you input `n = 5`, the function will calculate:
+
+\[
+F(5) = F(4) + F(3) = (F(3) + F(2)) + (F(2) + F(1)) = ((F(2) + F(1)) + (F(1) + F(0))) + ((F(1) + F(0)) + 1)
+\]
+
+This approach leads to redundant calculations of the same Fibonacci numbers, which makes the recursive method inefficient for large `n`.
+
+### Optimizing the Recursive Approach:
+
+To optimize the recursive solution, you can use **memoization** (storing previously computed values) or switch to an **iterative** solution, which brings down the time complexity to **O(n)**.
+
+Would you like to see the optimized recursive version with memoization, or is this explanation enough?

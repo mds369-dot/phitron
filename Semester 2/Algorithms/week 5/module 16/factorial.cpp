@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+// O(N)
 int fact(int n)
 {
     // base case
@@ -7,8 +8,8 @@ int fact(int n)
     {
         return 1;
     }
-    int chotoFactroial = fact(n - 1);
-    return chotoFactroial * n;
+    int chotoFactorial = fact(n - 1);
+    return chotoFactorial * n;
 }
 int main()
 {
@@ -18,7 +19,7 @@ int main()
     // O(N)
     for (int i = 1; i <= n; i++)
     {
-        ans *= 1;
+        ans *= i;
     }
     cout << ans << endl;
     return 0;
