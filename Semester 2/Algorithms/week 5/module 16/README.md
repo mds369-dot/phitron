@@ -212,3 +212,95 @@ This approach leads to redundant calculations of the same Fibonacci numbers, whi
 To optimize the recursive solution, you can use **memoization** (storing previously computed values) or switch to an **iterative** solution, which brings down the time complexity to **O(n)**.
 
 Would you like to see the optimized recursive version with memoization, or is this explanation enough?
+
+# Fibonacci Buttom Up
+
+The **bottom-up approach** for the Fibonacci series is an optimized way of solving the problem iteratively by building the solution from smaller subproblems. Instead of recalculating the Fibonacci value for each number multiple times (as in the recursive approach), we calculate and store the Fibonacci numbers in a table (array), starting from the smallest values, and use these to calculate the larger ones.
+
+### Bottom-Up Fibonacci (Tabulation)
+
+Here’s the C++ implementation using the bottom-up dynamic programming approach:
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int fibonacci(int n) {
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+
+    // Create an array to store Fibonacci numbers
+    int fib[n+1];
+
+    // Base cases
+    fib[0] = 0;
+    fib[1] = 1;
+
+    // Fill the array from the bottom up
+    for (int i = 2; i <= n; i++) {
+        fib[i] = fib[i-1] + fib[i-2];
+    }
+
+    return fib[n]; // Return the nth Fibonacci number
+}
+
+int main() {
+    int n;
+    cout << "Enter the value of n: ";
+    cin >> n;
+    cout << "Fibonacci of " << n << " is " << fibonacci(n) << endl;
+    return 0;
+}
+```
+
+### Explanation:
+
+1. **Base Case**: If `n` is 0, return 0; if `n` is 1, return 1. These are the two base cases of the Fibonacci series.
+2. **Table Initialization**: An array `fib[]` is created to store the Fibonacci numbers. `fib[0]` is initialized to 0, and `fib[1]` is initialized to 1.
+3. **Iteration**: Starting from index 2, we compute each Fibonacci number as the sum of the two preceding numbers: `fib[i] = fib[i-1] + fib[i-2]`.
+4. **Final Answer**: The nth Fibonacci number is returned at the end.
+
+### Time and Space Complexity:
+
+- **Time Complexity**: \( O(n) \) because we compute each Fibonacci number exactly once.
+- **Space Complexity**: \( O(n) \) because we are storing the Fibonacci numbers in an array.
+
+### Space-Optimized Version
+
+We can further optimize the space complexity to \( O(1) \) by only keeping track of the last two Fibonacci numbers instead of storing all of them:
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int fibonacci(int n) {
+    if (n == 0) return 0;
+    if (n == 1) return 1;
+
+    int prev2 = 0, prev1 = 1; // To store fib(n-2) and fib(n-1)
+    int curr;
+
+    // Compute Fibonacci iteratively without using extra space
+    for (int i = 2; i <= n; i++) {
+        curr = prev1 + prev2;  // Calculate current Fibonacci
+        prev2 = prev1;         // Shift the values
+        prev1 = curr;
+    }
+
+    return curr; // Return the nth Fibonacci number
+}
+
+int main() {
+    int n;
+    cout << "Enter the value of n: ";
+    cin >> n;
+    cout << "Fibonacci of " << n << " is " << fibonacci(n) << endl;
+    return 0;
+}
+```
+
+### Explanation of Space Optimization:
+
+- Instead of using an array, we only store the last two Fibonacci numbers (`prev2` and `prev1`), which are updated as we compute the current Fibonacci number. This reduces the space complexity to \( O(1) \), while keeping the time complexity at \( O(n) \).
+
+Would you like more explanation on the space optimization or try some related problems?
