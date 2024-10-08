@@ -213,6 +213,10 @@ To optimize the recursive solution, you can use **memoization** (storing previou
 
 Would you like to see the optimized recursive version with memoization, or is this explanation enough?
 
+# Fibonacci showing in graph
+
+- [Function and Graph Shwing Website](https://quanticdev.com/tools/recursion-visualization/)
+
 # Fibonacci Buttom Up
 
 The **bottom-up approach** for the Fibonacci series is an optimized way of solving the problem iteratively by building the solution from smaller subproblems. Instead of recalculating the Fibonacci value for each number multiple times (as in the recursive approach), we calculate and store the Fibonacci numbers in a table (array), starting from the smallest values, and use these to calculate the larger ones.
