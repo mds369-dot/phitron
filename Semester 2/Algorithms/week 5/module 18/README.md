@@ -1,6 +1,6 @@
 # Module 18
 
-1 . Subset Sum Variation
+# 1 . Subset Sum Variation
 
 - Subset Sum Top Down
   **Subset Sum (Top Down Approach)** হল ডাইনামিক প্রোগ্রামিং পদ্ধতি যা একটি নির্দিষ্ট লক্ষ্য `target` (বা `sum`) পাওয়া সম্ভব কিনা তা নির্ধারণ করে একটি দেওয়া `array` থেকে কিছু উপাদান নিয়ে।
@@ -225,7 +225,8 @@ int main() {
 
 Bottom-Up পদ্ধতিতে ছোট থেকে বড় সমস্যার সমাধান করা হয় এবং ডাইনামিক প্রোগ্রামিং টেবিল পূরণ করে আমরা সমস্যার সমাধান করি।
 
-2 . Count of Subset Sum Variation
+# 2 . Count of Subset Sum Variation
+
 **Count of Subset Sum Variation** হল একটি প্রোব্লেম, যেখানে তোমাকে একটি অ্যারেতে দেওয়া উপাদানগুলোর থেকে নির্দিষ্ট একটা টার্গেট সাম (sum) তৈরির জন্য কয়টা ভিন্ন ভিন্ন subset থাকতে পারে, সেটা বের করতে হয়।
 
 এই সমস্যা খুবই পরিচিত এবং ডায়নামিক প্রোগ্রামিং (DP) দিয়ে সমাধান করা হয়। চল, একটু ব্যাখ্যা করি কীভাবে সমস্যাটা কাজ করে:
@@ -323,7 +324,130 @@ int main() {
 
 এই ধরনের সমস্যায় ডায়নামিক প্রোগ্রামিং বেশ কার্যকরী সমাধান হতে পারে।
 
-3 . Equal Sum Partition Variation
-4 . Minimum Subset Sum Difference
-5 . Count Number of Subsets with Given Difference
-4 . Target Sum Variation
+# 3 . Equal Sum Partition Variation
+
+**Equal Sum Partition Variation** হল একটি সমস্যা, যেখানে তোমাকে একটি অ্যারে দেওয়া থাকে, এবং তোমাকে বের করতে হয়, অ্যারেটিকে কি এমনভাবে দুটি সাবসেটে বিভক্ত করা সম্ভব, যাতে সেই দুটি সাবসেটের যোগফল সমান হয়। এই সমস্যাটি **Partition Problem** নামেও পরিচিত।
+
+### সমস্যা বিবৃতি:
+
+তোমাকে একটি `arr[]` অ্যারে দেওয়া হলো। তোমাকে দেখতে হবে, এই অ্যারেটিকে কি দুটি সাবসেটে বিভক্ত করা সম্ভব, যাতে:
+
+- সাবসেট দুটি হয় disjoint (অর্থাৎ, কোনো উপাদান দুইবার ব্যবহার করা যাবে না),
+- দুটি সাবসেটের যোগফল সমান হয়।
+
+### উদাহরণ:
+
+**Input:**
+
+```
+arr[] = {1, 5, 11, 5}
+```
+
+**Output:**
+
+```
+Yes
+Explanation: The array can be partitioned as {1, 5, 5} and {11}, and both subsets have the same sum.
+```
+
+**Input:**
+
+```
+arr[] = {1, 3, 5}
+```
+
+**Output:**
+
+```
+No
+Explanation: The array cannot be partitioned into two subsets with equal sum.
+```
+
+### কীভাবে সমস্যাটি কাজ করে:
+
+ধরি, অ্যারেটির মোট যোগফল \(S\)। এখন, যদি \(S\) বিজোড় (odd) হয়, তাহলে অ্যারেটিকে সমান দুটি সাবসেটে ভাগ করা কখনোই সম্ভব না, কারণ দুটি সমান সংখ্যার যোগফল কখনো বিজোড় হবে না। তাই, \(S\) যদি বিজোড় হয়, সোজাসুজি `No` রিটার্ন করা যায়।
+
+যদি \(S\) জোড় হয়, তাহলে সমস্যাটা আসলে হয়ে দাঁড়ায় "Subset Sum Problem" যেখানে তোমাকে দেখতে হবে, অ্যারেটির মধ্যে এমন কোনো subset আছে কিনা, যার যোগফল \(S/2\) এর সমান। যদি এমন subset থাকে, তাহলে অ্যারেটিকে সমান দুটি অংশে ভাগ করা সম্ভব, অন্যথায় না।
+
+### পদ্ধতি:
+
+এই সমস্যাটাও ডায়নামিক প্রোগ্রামিং দিয়ে সমাধান করা যায়, যেখানে `Subset Sum Problem` এর পদ্ধতি ব্যবহার করা হয়।
+
+### ধাপগুলো:
+
+1. অ্যারেটির মোট যোগফল বের করো।
+2. যদি যোগফল বিজোড় হয়, তাহলে `No` রিটার্ন করো।
+3. যদি যোগফল জোড় হয়, তাহলে দেখতে হবে \(S/2\) সমান কোনো subset আছে কি না।
+4. যদি \(S/2\) সমান subset থাকে, তাহলে অ্যারেটি সমান দুটি সাবসেটে ভাগ করা সম্ভব, অন্যথায় অসম্ভব।
+
+### কোড উদাহরণ (C++):
+
+```cpp
+#include <iostream>
+using namespace std;
+
+bool subsetSum(int arr[], int n, int sum) {
+    bool dp[n+1][sum+1];
+
+    // যখন subset sum 0 হয়, সেটার একটা সম্ভাবনা থাকে: খালি subset
+    for (int i = 0; i <= n; i++)
+        dp[i][0] = true;
+
+    // যখন subset sum > 0 হয় কিন্তু কোনো উপাদান নেই
+    for (int j = 1; j <= sum; j++)
+        dp[0][j] = false;
+
+    // DP টেবিল পূরণ করা
+    for (int i = 1; i <= n; i++) {
+        for (int j = 1; j <= sum; j++) {
+            if (arr[i-1] <= j)
+                dp[i][j] = dp[i-1][j] || dp[i-1][j - arr[i-1]];
+            else
+                dp[i][j] = dp[i-1][j];
+        }
+    }
+
+    return dp[n][sum];
+}
+
+bool canPartition(int arr[], int n) {
+    int sum = 0;
+
+    // মোট যোগফল বের করো
+    for (int i = 0; i < n; i++)
+        sum += arr[i];
+
+    // যদি যোগফল বিজোড় হয়, সমান ভাগ করা সম্ভব না
+    if (sum % 2 != 0)
+        return false;
+
+    // যদি যোগফল জোড় হয়, দেখতে হবে subset sum = sum/2 পাওয়া যায় কিনা
+    return subsetSum(arr, n, sum / 2);
+}
+
+int main() {
+    int arr[] = {1, 5, 11, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    if (canPartition(arr, n))
+        cout << "Yes\n";
+    else
+        cout << "No\n";
+
+    return 0;
+}
+```
+
+### ব্যাখ্যা:
+
+1. **subsetSum()** ফাংশনটি মূলত subset sum বের করার জন্য ব্যবহৃত হয়। এটা `dp` টেবিল তৈরি করে যেখানে `dp[i][j]` সংরক্ষণ করে, প্রথম `i` উপাদানের মধ্যে থেকে `j` সমান subset তৈরি করা সম্ভব কি না।
+2. **canPartition()** ফাংশনটি আগে অ্যারেটির মোট যোগফল বের করে। তারপর সেটা জোড় না বিজোড়, সেটা দেখে। যদি জোড় হয়, তাহলে `subsetSum()` ব্যবহার করে দেখা হয় \(S/2\) সমান subset পাওয়া যায় কিনা।
+
+### টাইম কমপ্লেক্সিটি:
+
+- টাইম কমপ্লেক্সিটি: `O(n * sum)` (যেখানে `n` হল অ্যারের সাইজ এবং `sum` হল টার্গেট সামের অর্ধেক)
+- স্পেস কমপ্লেক্সিটি: `O(n * sum)`
+
+  4 . Minimum Subset Sum Difference
+  5 . Count Number of Subsets with Given Difference
+  4 . Target Sum Variation
