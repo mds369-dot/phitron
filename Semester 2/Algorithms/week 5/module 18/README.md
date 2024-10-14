@@ -567,4 +567,274 @@ int main() {
 
 # 5 . Count Number of Subsets with Given Difference
 
+**Count Number of Subsets with Given Difference** হল একটি সমস্যা যেখানে তোমাকে একটি অ্যারে এবং একটি নির্দিষ্ট পার্থক্য (difference) দেওয়া হবে, এবং তোমাকে জানতে হবে কতগুলো ভিন্ন subset আছে, যেগুলোর যোগফলের মধ্যে পার্থক্য সেই নির্দিষ্ট পার্থক্যের সমান হয়।
+
+### সমস্যা বিবৃতি:
+
+তোমাকে একটি `arr[]` অ্যারে এবং একটি পার্থক্য `diff` দেওয়া হবে। তোমাকে বের করতে হবে, অ্যারেটির এমন কয়টি ভিন্ন subset আছে, যেগুলোর যোগফল `S1` এবং `S2` এর মধ্যে পার্থক্য `S1 - S2 = diff` সমান হয়।
+
+### উদাহরণ:
+
+**Input:**
+
+```
+arr[] = {1, 1, 2, 3}
+diff = 1
+```
+
+**Output:**
+
+```
+3
+Explanation: There are 3 subsets with the given difference:
+- Subset 1: {1, 2}, {1, 3} with sums 3 and 2 (difference 1)
+- Subset 2: {1, 1, 2}, {3} with sums 4 and 3 (difference 1)
+- Subset 3: {1, 1, 3}, {2} with sums 5 and 4 (difference 1)
+```
+
+### সমস্যাটি কীভাবে কাজ করে:
+
+এই সমস্যাটি একটি ভেরিয়েশন, যেখানে তোমাকে দুটি সাবসেটের যোগফল এর মধ্যে একটি নির্দিষ্ট পার্থক্য বের করতে হবে। আমরা জানি, দুটি subset এর যোগফল `S1` এবং `S2` হলে:
+
+```
+S1 - S2 = diff
+S1 + S2 = totalSum
+```
+
+দুটি সমীকরণ একসাথে সমাধান করলে, আমরা পেতে পারি:
+
+```
+S1 = (totalSum + diff) / 2
+```
+
+এখন সমস্যা হয়ে দাঁড়ায়, কতগুলো subset আছে, যেগুলোর যোগফল `S1` এর সমান হয়। এটা মূলত **Subset Sum Problem** এ রূপান্তরিত হয়।
+
+### পদ্ধতি:
+
+1. প্রথমে অ্যারেটির মোট যোগফল বের করো `totalSum`।
+2. যদি `(totalSum + diff)` বিজোড় হয়, তাহলে এর সমাধান সম্ভব না, কারণ subset যোগফল অর্ধেক করতে গেলে পুরো সংখ্যা পাওয়া উচিত।
+3. যদি `(totalSum + diff)` জোড় হয়, তাহলে সমস্যা হলো, কতগুলো subset আছে, যেগুলোর যোগফল \(S1 = (totalSum + diff) / 2\) এর সমান হয়। এইটা বের করার জন্য আমরা ডায়নামিক প্রোগ্রামিং ব্যবহার করব।
+
+### উদাহরণ ব্যাখ্যা:
+
+ধরি `arr[] = {1, 1, 2, 3}` এবং `diff = 1`।
+
+- অ্যারেটির মোট যোগফল `totalSum = 1 + 1 + 2 + 3 = 7`
+- \(S1 = (7 + 1) / 2 = 4\)
+  এখন আমাদের বের করতে হবে, কতগুলো subset আছে যেগুলোর যোগফল ৪ হয়।
+
+### ডাইনামিক প্রোগ্রামিং পদ্ধতি:
+
+আমরা একটি DP array ব্যবহার করব, যেখানে `dp[i][j]` দেখাবে যে প্রথম `i` উপাদান ব্যবহার করে \(j\) সমান যোগফল তৈরি করা সম্ভব কি না।
+
+### কোড উদাহরণ (C++):
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int countSubsetsWithSum(int arr[], int n, int sum) {
+    int dp[n+1][sum+1];
+
+    // যখন sum 0 হয়, তখন সবসময় খালি subset থাকে
+    for (int i = 0; i <= n; i++)
+        dp[i][0] = 1;
+
+    // যখন subset sum > 0 হয় এবং কোনো উপাদান নেই, তখন সমাধান নেই
+    for (int j = 1; j <= sum; j++)
+        dp[0][j] = 0;
+
+    // DP টেবিল পূরণ করা
+    for (int i = 1; i <= n; i++) {
+        for (int j = 0; j <= sum; j++) {
+            if (arr[i-1] <= j)
+                dp[i][j] = dp[i-1][j] + dp[i-1][j - arr[i-1]];
+            else
+                dp[i][j] = dp[i-1][j];
+        }
+    }
+
+    return dp[n][sum];
+}
+
+int countSubsetsWithGivenDifference(int arr[], int n, int diff) {
+    // মোট যোগফল বের করো
+    int totalSum = 0;
+    for (int i = 0; i < n; i++)
+        totalSum += arr[i];
+
+    // যদি (totalSum + diff) বিজোড় হয়, তাহলে সমাধান সম্ভব না
+    if ((totalSum + diff) % 2 != 0)
+        return 0;
+
+    // টার্গেট সাম বের করো
+    int targetSum = (totalSum + diff) / 2;
+
+    // বের করো কতগুলো subset আছে যেগুলোর যোগফল targetSum সমান
+    return countSubsetsWithSum(arr, n, targetSum);
+}
+
+int main() {
+    int arr[] = {1, 1, 2, 3};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int diff = 1;
+
+    cout << "Number of subsets with given difference: " << countSubsetsWithGivenDifference(arr, n, diff) << endl;
+
+    return 0;
+}
+```
+
+### ব্যাখ্যা:
+
+1. **countSubsetsWithSum()** ফাংশনটি ডাইনামিক প্রোগ্রামিং ব্যবহার করে নির্দিষ্ট যোগফলের সাথে subset এর সংখ্যা গণনা করে।
+2. **countSubsetsWithGivenDifference()** ফাংশনটি প্রথমে \(S1 = (totalSum + diff) / 2\) বের করে এবং তারপর সেই যোগফলের সাথে কতগুলো subset আছে তা গণনা করে।
+
+### টাইম কমপ্লেক্সিটি:
+
+- টাইম কমপ্লেক্সিটি: \(O(n \times targetSum)\)
+- স্পেস কমপ্লেক্সিটি: \(O(n \times targetSum)\)
+
 # 4 . Target Sum Variation
+
+**Target Sum Variation** একটি সমস্যা যেখানে তোমাকে একটি অ্যারে এবং একটি টার্গেট যোগফল (`target sum`) দেওয়া হয়, এবং তোমাকে বের করতে হবে কতভাবে তুমি অ্যারেটির উপাদানগুলোর সাথে প্লাস (`+`) অথবা মাইনাস (`-`) ব্যবহার করে সেই টার্গেট যোগফল তৈরি করতে পারো।
+
+### সমস্যা বিবৃতি:
+
+তোমাকে একটি `arr[]` অ্যারে এবং একটি `target` মান দেওয়া হবে। তোমাকে বের করতে হবে কতগুলো ভিন্ন উপায়ে তুমি প্রতিটি উপাদানকে প্লাস বা মাইনাস চিহ্ন সহ ব্যবহার করে সেই টার্গেট যোগফল পেতে পারো।
+
+### উদাহরণ:
+
+**Input:**
+
+```
+arr[] = {1, 1, 2, 3}
+target = 1
+```
+
+**Output:**
+
+```
+3
+Explanation: The ways to assign + and - signs to get target sum 1 are:
+- +1 -1 -2 +3 = 1
+- -1 +1 +2 -3 = 1
+- +1 +1 -2 +3 = 1
+```
+
+### সমস্যাটি কীভাবে কাজ করে:
+
+তুমি অ্যারেটির প্রতিটি উপাদানকে দুইভাবে ব্যবহার করতে পারো—একটি ক্ষেত্রে সেটার সামনে `+` চিহ্ন এবং অন্য ক্ষেত্রে সেটার সামনে `-` চিহ্ন দিতে পারো। তোমার লক্ষ্য হলো কতভাবে এই চিহ্নগুলোর সমন্বয়ে টার্গেট যোগফল তৈরি করা যায় তা বের করা।
+
+### মূল ধারণা:
+
+এই সমস্যাটি **Subset Sum Problem** এর উপর ভিত্তি করে। তুমি প্রতিটি উপাদানকে প্লাস বা মাইনাস চিহ্ন দিয়ে দুটি subset এ বিভক্ত করতে পারো:
+
+- `S1` হবে সেই subset যেখানে উপাদানগুলোর সামনে প্লাস চিহ্ন থাকে।
+- `S2` হবে সেই subset যেখানে উপাদানগুলোর সামনে মাইনাস চিহ্ন থাকে।
+
+তাহলে:
+
+```
+S1 - S2 = target
+S1 + S2 = totalSum
+```
+
+উপরের দুটি সমীকরণ একত্র করলে:
+
+```
+S1 = (totalSum + target) / 2
+```
+
+এখন সমস্যাটি রূপান্তরিত হলো **Count Subset Sum** সমস্যায়, যেখানে তোমাকে দেখতে হবে কতগুলো subset আছে যেগুলোর যোগফল \(S1\) সমান।
+
+### ধাপগুলো:
+
+1. প্রথমে অ্যারেটির মোট যোগফল `totalSum` বের করো।
+2. যদি `(totalSum + target)` বিজোড় হয়, তাহলে এর সমাধান সম্ভব না, কারণ \(S1\) কে সম্পূর্ণ সংখ্যা হতে হবে।
+3. যদি `(totalSum + target)` জোড় হয়, তাহলে \(S1 = (totalSum + target) / 2\) সমান কোনো subset আছে কিনা সেটা বের করতে হবে। এরপর আমরা DP দিয়ে সেই subset-এর সংখ্যা গণনা করব।
+
+### উদাহরণ ব্যাখ্যা:
+
+ধরি, `arr[] = {1, 1, 2, 3}` এবং `target = 1`।
+
+- অ্যারেটির মোট যোগফল `totalSum = 1 + 1 + 2 + 3 = 7`
+- \(S1 = (7 + 1) / 2 = 4\)
+
+এখন আমাদের বের করতে হবে, কতগুলো subset আছে যেগুলোর যোগফল \(4\) সমান হয়।
+
+### ডাইনামিক প্রোগ্রামিং পদ্ধতি:
+
+আমরা একটি DP array ব্যবহার করব, যেখানে `dp[i][j]` দেখাবে যে প্রথম `i` উপাদান ব্যবহার করে \(j\) সমান subset তৈরি করা সম্ভব কি না।
+
+### কোড উদাহরণ (C++):
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int countSubsetsWithSum(int arr[], int n, int sum) {
+    int dp[n+1][sum+1];
+
+    // যখন sum 0 হয়, তখন সবসময় খালি subset থাকে
+    for (int i = 0; i <= n; i++)
+        dp[i][0] = 1;
+
+    // যখন subset sum > 0 হয় এবং কোনো উপাদান নেই, তখন সমাধান নেই
+    for (int j = 1; j <= sum; j++)
+        dp[0][j] = 0;
+
+    // DP টেবিল পূরণ করা
+    for (int i = 1; i <= n; i++) {
+        for (int j = 0; j <= sum; j++) {
+            if (arr[i-1] <= j)
+                dp[i][j] = dp[i-1][j] + dp[i-1][j - arr[i-1]];
+            else
+                dp[i][j] = dp[i-1][j];
+        }
+    }
+
+    return dp[n][sum];
+}
+
+int findTargetSumWays(int arr[], int n, int target) {
+    // মোট যোগফল বের করো
+    int totalSum = 0;
+    for (int i = 0; i < n; i++)
+        totalSum += arr[i];
+
+    // যদি (totalSum + target) বিজোড় হয়, তাহলে সমাধান সম্ভব না
+    if ((totalSum + target) % 2 != 0)
+        return 0;
+
+    // টার্গেট সাম বের করো
+    int targetSum = (totalSum + target) / 2;
+
+    // বের করো কতগুলো subset আছে যেগুলোর যোগফল targetSum সমান
+    return countSubsetsWithSum(arr, n, targetSum);
+}
+
+int main() {
+    int arr[] = {1, 1, 2, 3};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int target = 1;
+
+    cout << "Number of ways to get target sum: " << findTargetSumWays(arr, n, target) << endl;
+
+    return 0;
+}
+```
+
+### ব্যাখ্যা:
+
+1. **countSubsetsWithSum()** ফাংশনটি ডাইনামিক প্রোগ্রামিং ব্যবহার করে নির্দিষ্ট যোগফলের সাথে subset এর সংখ্যা গণনা করে।
+2. **findTargetSumWays()** ফাংশনটি প্রথমে \(S1 = (totalSum + target) / 2\) বের করে এবং তারপর সেই যোগফলের সাথে কতগুলো subset আছে তা গণনা করে।
+
+### টাইম কমপ্লেক্সিটি:
+
+- টাইম কমপ্লেক্সিটি: \(O(n \times targetSum)\)
+- স্পেস কমপ্লেক্সিটি: \(O(n \times targetSum)\)
+
+এই সমস্যার সমাধানটি মূলত subset sum problem এর উপর ভিত্তি করে, কিন্তু চিহ্নের ভিন্নতার কারণে একে নতুন একটি সমস্যার মতো মনে হয়।
