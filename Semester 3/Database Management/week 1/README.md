@@ -20,4 +20,23 @@
 6. 2 - 5 CREATE Table
 7. 2 - 6 INSERT into Table
 8. 2 - 7 UPDATE and DROP Table
+### Module - 2.5
+
+1. Practice Problem Set Day 01
+### Module - 3
+
+1. 3 - 0 Table Query Introduction
+2. 3 - 1 Constraints
+3. 3 - 2 SELECT
+4. 3 - 3 WHERE
+5. 3 - 4 Arithmetic Operators
+6. 3 - 5 Logical AND OR Operators
+7. 3 - 6 DISTINCT, ORDER BY, LIMIT, OFFSET
+### Module - 3.5
+
+1. Practice Problem Set Day 02
+
+### Module - 4
+
+1.  Assignment 1
 
