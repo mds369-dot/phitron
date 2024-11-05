@@ -224,3 +224,180 @@
     SELECT TRUNCATE(2.345, 1);  -- Result: 2.3
     ```
 
+### MYSQL **Group Functions**
+
+1. **MAX**: Returns the maximum value from a column.
+   ```sql
+   SELECT MAX(column_name) FROM table_name;
+   ```
+   - Example: Find the highest salary in an employee table.
+     ```sql
+     SELECT MAX(salary) FROM employees;
+     ```
+
+2. **MIN**: Returns the minimum value from a column.
+   ```sql
+   SELECT MIN(column_name) FROM table_name;
+   ```
+   - Example: Find the lowest salary in an employee table.
+     ```sql
+     SELECT MIN(salary) FROM employees;
+     ```
+
+3. **COUNT**: Returns the number of rows that match a specified condition. `COUNT(*)` counts all rows, while `COUNT(column_name)` counts only non-NULL values.
+   ```sql
+   SELECT COUNT(column_name) FROM table_name;
+   ```
+   - Example: Count the number of employees in the employee table.
+     ```sql
+     SELECT COUNT(*) FROM employees;
+     ```
+
+4. **SUM**: Calculates the total sum of a numeric column.
+   ```sql
+   SELECT SUM(column_name) FROM table_name;
+   ```
+   - Example: Calculate the total sales in a sales table.
+     ```sql
+     SELECT SUM(sales_amount) FROM sales;
+     ```
+
+5. **AVG**: Calculates the average value of a numeric column.
+   ```sql
+   SELECT AVG(column_name) FROM table_name;
+   ```
+   - Example: Find the average salary in the employee table.
+     ```sql
+     SELECT AVG(salary) FROM employees;
+     ```
+
+These functions are often used with the `GROUP BY` clause to perform calculations on grouped data. For instance:
+
+```sql
+SELECT department_id, AVG(salary)
+FROM employees
+GROUP BY department_id;
+```
+
+### Group By, Having
+
+### 1. Department-Wise Aggregation
+Let's say you have an `employees` table with columns `employee_id`, `department_id`, and `salary`. You might want to find the total or average salary in each department.
+
+- **Example**: Calculate the total salary for each department.
+   ```sql
+   SELECT department_id, SUM(salary) AS total_salary
+   FROM employees
+   GROUP BY department_id;
+   ```
+
+- **Using `HAVING`**: To find departments where the total salary is above a certain threshold (e.g., 100,000).
+   ```sql
+   SELECT department_id, SUM(salary) AS total_salary
+   FROM employees
+   GROUP BY department_id
+   HAVING total_salary > 100000;
+   ```
+
+### 2. Country-Wise Aggregation
+Assume you have a `customers` table with columns `customer_id`, `country`, and `sales`. You might want to find the total sales by country.
+
+- **Example**: Calculate the total sales for each country.
+   ```sql
+   SELECT country, SUM(sales) AS total_sales
+   FROM customers
+   GROUP BY country;
+   ```
+
+- **Using `HAVING`**: To find countries with total sales above a certain threshold (e.g., 500,000).
+   ```sql
+   SELECT country, SUM(sales) AS total_sales
+   FROM customers
+   GROUP BY country
+   HAVING total_sales > 500000;
+   ```
+
+### ALTER TABLE
+
+#### DATABASE: Modifying Data
+1. **UPDATE**: Modifies existing records in a table.
+   ```sql
+   UPDATE table_name
+   SET column1 = value1, column2 = value2
+   WHERE condition;
+   ```
+   - **Example**: Update the salary of an employee with `employee_id = 1`.
+     ```sql
+     UPDATE employees
+     SET salary = 50000
+     WHERE employee_id = 1;
+     ```
+
+2. **DELETE**: Removes records from a table.
+   ```sql
+   DELETE FROM table_name WHERE condition;
+   ```
+   - **Example**: Delete an employee record where `employee_id = 1`.
+     ```sql
+     DELETE FROM employees
+     WHERE employee_id = 1;
+     ```
+   - **Note**: Omitting `WHERE` will delete all records from the table:
+     ```sql
+     DELETE FROM table_name;
+     ```
+
+#### STRUCTURE: Modifying Table Structure
+3. **ALTER**: Used to modify the structure of an existing table, such as adding, modifying, or dropping columns.
+   - **Add a Column**:
+     ```sql
+     ALTER TABLE table_name
+     ADD column_name datatype;
+     ```
+     - Example: Add a `phone` column to the `employees` table.
+       ```sql
+       ALTER TABLE employees
+       ADD phone VARCHAR(15);
+       ```
+
+   - **Modify a Column**:
+     ```sql
+     ALTER TABLE table_name
+     MODIFY column_name new_datatype;
+     ```
+     - Example: Change the data type of the `phone` column in the `employees` table.
+       ```sql
+       ALTER TABLE employees
+       MODIFY phone CHAR(10);
+       ```
+
+   - **Drop a Column**:
+     ```sql
+     ALTER TABLE table_name
+     DROP COLUMN column_name;
+     ```
+     - Example: Remove the `phone` column from the `employees` table.
+       ```sql
+       ALTER TABLE employees
+       DROP COLUMN phone;
+       ```
+
+4. **DROP**: Used to delete an entire table or database.
+   - **Drop a Table**:
+     ```sql
+     DROP TABLE table_name;
+     ```
+     - Example: Delete the `employees` table.
+       ```sql
+       DROP TABLE employees;
+       ```
+
+   - **Drop a Database**:
+     ```sql
+     DROP DATABASE database_name;
+     ```
+     - Example: Delete a database named `company`.
+       ```sql
+       DROP DATABASE company;
+       ```
+
