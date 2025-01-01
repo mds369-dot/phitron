@@ -1,33 +1,19 @@
 {
   "main": {
-    "id": "b112423977609549",
+    "id": "1a9d4c38548415ef",
     "type": "split",
     "children": [
       {
-        "id": "2ec5e521d1a84815",
+        "id": "979993ada03a6b36",
         "type": "tabs",
         "children": [
           {
-            "id": "048364d892700df8",
+            "id": "3d29d3913c38883d",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Semester 3/Database Management/week 2/module 5/README.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "README"
-            }
-          },
-          {
-            "id": "c7f80dd9a7940d42",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Semester 3/Database Management/week 2/module 7.5/README.md",
+                "file": "Semester 3/Database Management/week 3/module 10/README.md",
                 "mode": "source",
                 "source": false
               },
@@ -35,22 +21,21 @@
               "title": "README"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
   },
   "left": {
-    "id": "b3a0e4705b179366",
+    "id": "09987c91d0eeb3b5",
     "type": "split",
     "children": [
       {
-        "id": "e7863b2c9f082fe9",
+        "id": "74fdee7a1552d74a",
         "type": "tabs",
         "children": [
           {
-            "id": "51edfeccc27561e5",
+            "id": "013926d24665d6d0",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -62,7 +47,7 @@
             }
           },
           {
-            "id": "f237cfc3cac51ec8",
+            "id": "252d5af3c54439c1",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -79,7 +64,7 @@
             }
           },
           {
-            "id": "7390fe3c27bf578e",
+            "id": "f33752ce745faf2f",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -92,23 +77,23 @@
       }
     ],
     "direction": "horizontal",
-    "width": 245.5
+    "width": 247.5
   },
   "right": {
-    "id": "186a27161c07af2b",
+    "id": "827d06dc217aef63",
     "type": "split",
     "children": [
       {
-        "id": "6ff532634235cc5e",
+        "id": "4416fd7cb27a8ac2",
         "type": "tabs",
         "children": [
           {
-            "id": "ec27c9d1e9a82b2f",
+            "id": "c6a874ce782c591b",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Semester 3/Database Management/week 1/module 2.5/README.md",
+                "file": "Semester 3/Database Management/week 3/module 10/README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -122,21 +107,20 @@
             }
           },
           {
-            "id": "1e9445d944069e7e",
+            "id": "7fbb1ee957f59083",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Semester 3/Database Management/week 1/module 2.5/README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from README"
+              "title": "Outgoing links"
             }
           },
           {
-            "id": "8f490aee9da6322a",
+            "id": "63ea7a3da1931431",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -149,23 +133,20 @@
             }
           },
           {
-            "id": "e761a72ee43dec20",
+            "id": "553f9841fc298035",
             "type": "leaf",
             "state": {
               "type": "outline",
-              "state": {
-                "file": "Semester 3/Database Management/week 1/module 2.5/README.md"
-              },
+              "state": {},
               "icon": "lucide-list",
-              "title": "Outline of README"
+              "title": "Outline"
             }
           }
         ]
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 200
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -177,32 +158,11 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c7f80dd9a7940d42",
+  "active": "3d29d3913c38883d",
   "lastOpenFiles": [
-    "Semester 3/Database Management/week 2/module 7/README.md",
-    "Semester 3/Database Management/week 2/module 7.5/README.md",
-    "Semester 3/Database Management/week 2/module 5/README.md",
-    "Semester 3/Database Management/week 2/module 6.5/README.md",
-    "Semester 3/Database Management/week 2/module 7",
-    "Semester 3/Database Management/week 2/New folder",
-    "Semester 3/Database Management/week 2/module 6/README.md",
-    "Semester 3/Database Management/week 2/module 6.5",
-    "Semester 3/Database Management/week 2/module 5/DUMMY_DATE_FOR_PRATICE.sql",
+    "Semester 3/Database Management/week 3/module 9/README.md",
     "README.md",
-    "Semester 3/Database Management/week 1/module 4/README.md",
-    "Semester 3/Database Management/week 1/module 4/assignment_practice.sql",
-    "Semester 3/Database Management/week 1/module 3.5/README.md",
-    "Semester 3/Database Management/week 1/README.md",
-    "Semester 3/Database Management/week 1/module 3.5",
-    "Semester 3/Database Management/week 1/New folder",
-    "Semester 3/Database Management/week 1/module 3/README.md",
-    "Semester 3/Database Management/week 1/module 2.5/README.md",
-    "Semester 3/Database Management/week 1/module 2/README.md",
-    "Semester 3/Database Management/week 1/module 2.5/Pratice_Database.sql",
-    "Semester 3/Database Management/week 1/module 2.5",
-    "Semester 3/Database Management/week 1/module 2/first_database_create_insert_update_delete_drop.sql",
-    "Semester 3/Database Management/week 1/module 1/README.md",
-    "Semester 2/Algorithms/week 5/module 18/README.md",
-    "Untitled.canvas"
+    "Untitled.md",
+    "Semester 3/Database Management/week 3/module 10/README.md"
   ]
 }
