@@ -55,16 +55,33 @@ var result = parseFloat(num1) + num2
 //     console.log("invalid")
 // }
 
-var result = 80
+// var result = 80
 
-var person = {
-    hand: 2,
-    eye: 2,
-    hair: "Don't Know",
-    father: {
-        name: "John",
-        age: 20,
-    },
-}
+// var person = {
+//     hand: 2,
+//     eye: 2,
+//     hair: "Don't Know",
+//     father: {
+//         name: "John",
+//         age: 20,
+//     },
+// }
 
-console.log(person.father.age)
+// console.log(person.father.age)
+
+var test = "Test"
+
+var friends = [
+    "hero", 5, "Alom", test, {name: "Johan", age: 25}, ["Rohim", "Korim"],"Jobbar"
+];
+
+// console.log(friends[4])
+
+// friends.push("SHAOGR");
+
+// friends.pop()
+
+friends.unshift("SHAGOR")
+friends.shift()
+
+console.log(friends);
