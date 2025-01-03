@@ -81,7 +81,35 @@ var friends = [
 
 // friends.pop()
 
-friends.unshift("SHAGOR")
-friends.shift()
+// friends.unshift("SHAGOR")
+// friends.shift()
 
-console.log(friends);
+// console.log(friends);
+
+// for(var i = 0; i < friends.length; i++){
+//    // console.log(friends[i]);
+//    var element = friends[i];
+
+//    if(element == "Alom")
+//    {
+//     console.log("Yesss, Sir")
+//    }
+//    else{
+//     console.log("Nooo, Sir")
+//    }
+// }
+
+
+// for(var index = 0; index < 20; index++)
+// {
+//     var element = index
+//     console.log(element)
+
+// }
+
+function sum(num1, num2){
+    var result = num1 = num2;
+    console.log(result);
+}
+
+sum(2, 4)
