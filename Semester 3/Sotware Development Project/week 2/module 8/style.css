@@ -1,0 +1,23 @@
+
+body {
+  font-family: Arial, sans-serif;
+}
+#drink-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.card img {
+  height: 150px;
+  object-fit: cover;
+}
+#cart {
+  border-left: 2px solid #ddd;
+  padding-left: 15px;
+}
+#cart table {
+  width: 100%;
+}
+#cart table th, #cart table td {
+  text-align: left;
+}
