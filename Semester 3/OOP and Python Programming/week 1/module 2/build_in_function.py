@@ -1,0 +1,5 @@
+# heighest = max(45, 98, 45, 87, 96, 41)
+heighest = max([45, 98, 45, 87, 96, 41])
+smallest = min([45, 98, 45, 87, 96, 41])
+lenght = len([45, 98, 45, 87, 96, 41])
+print(heighest, smallest, lenght)
