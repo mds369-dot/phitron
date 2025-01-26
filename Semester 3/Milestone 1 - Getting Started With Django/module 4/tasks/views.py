@@ -14,3 +14,5 @@ def test(request):
     }
     return render(request, 'test.html', context)
 
+def create_task(request):
+    return render(request, 'task_form.html')
